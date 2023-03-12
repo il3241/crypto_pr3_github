@@ -2,42 +2,54 @@ def input_func():
     #m = 26
 
     print("Введите текст на английском языке:")
-    input_text = input().lower()
+    input_text = input().lower().replace(' ', '')
     input_text = delete_extra(input_text)
 
     while eng_alp(input_text) == False:
         print("Вы ввели текст не на английском. \nВведите текст на английском языке:")
-        input_text = input().lower()
+        input_text = input().lower().replace(' ', '')
         input_text = delete_extra(input_text)
 
-    print("Введите тип шифра:\n 1 - классический;\n 2 - самоключ;\n 3 - ключ по шифротексту.")
+    print("Введите тип шифра:\n 1 - классический;\n 2 - самоключ;\n 3 - самоключ по шифротексту.")
     type = int(input())
 
     print("Введите необходимое действие de/en:")
-    en_de = input()
+    en_de = input().lower()
 
     if type == 1:
         print("Введите ключ:")
-        slogan = input()
+        slogan = input().lower()
+        slogan = delete_extra(slogan)
+        while eng_alp(slogan) == False:
+            print("Вы ввели ключ не на английском. \nВведите ключ на английском языке:")
+            slogan = input().lower()
+            slogan = delete_extra(slogan)
     elif type == 2 or type == 3:
         print("Введите ключ:")
-        slogan = input()
+        slogan = input().lower()
+        slogan = delete_extra(slogan)
         while len(slogan) != 1:
             print("Длинна ключа должна быть равна 1")
-            slogan = input()
+            slogan = input().lower()
+            while eng_alp(slogan) == False:
+                print("Вы ввели ключ не на английском. \nВведите ключ на английском языке:")
+                slogan = input().lower()
+                slogan = delete_extra(slogan)
 
     while en_de != "en" and en_de != "de":
         print("Некоректно введено необходимое действие, введите en либо de:")
-        en_de = input()
+        en_de = input().lower()
 
     if en_de == "en":
+        print("Полученный закрытый текст:")
         print(encrypt(input_text, slogan, type))
     if en_de == "de":
+        print("Полученный открытый текст:")
         print(decrypt(input_text, slogan, type))
 
 
-def eng_alp(open_text: str) -> bool:
-    for symbol in open_text:
+def eng_alp(text: str) -> bool:
+    for symbol in text:
         if 97 > ord(symbol) or ord(symbol) > 123:
             return False
     return True
